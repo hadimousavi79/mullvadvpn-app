@@ -37,6 +37,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider, @unchecked Sendable {
         EphemeralPeerReceiver(tunnelProvider: adapter, keyReceiver: self)
     }()
 
+    var apiContext: MullvadApiContext!
+
     // swiftlint:disable:next function_body_length
     override init() {
         Self.configureLogging()
@@ -82,7 +84,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider, @unchecked Sendable {
         let proxyFactory = REST.ProxyFactory.makeProxyFactory(
             transportProvider: transportProvider,
             apiTransportProvider: apiTransportProvider,
-            addressCache: addressCache
         )
         let accountsProxy = proxyFactory.createAccountsProxy()
         let devicesProxy = proxyFactory.createDevicesProxy()
@@ -248,6 +249,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider, @unchecked Sendable {
                 relaySelector: shadowsocksRelaySelector,
                 settingsUpdater: tunnelSettingsUpdater
             )
+        )
+
+        apiContext = try! MullvadApiContext(
+            host: REST.defaultAPIHostname,
+            address: REST.defaultAPIEndpoint.description,
+            provider: transportStrategy.opaqueConnectionModeProvider
         )
 
         encryptedDNSTransport = EncryptedDNSTransport(urlSession: urlSession)
