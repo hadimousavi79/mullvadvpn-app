@@ -60,7 +60,10 @@ public struct TransportStrategy: Equatable, Sendable {
     ) {
         self.shadowsocksLoader = shadowsocksLoader
         self.accessMethodIterator = AccessMethodIterator(dataSource: datasource)
-        self.connectionModeProviderProxy = SwiftConnectionModeProviderProxy(provider: accessMethodIterator)
+        self.connectionModeProviderProxy = SwiftConnectionModeProviderProxy(
+            provider: accessMethodIterator,
+            domainName: REST.encryptedDNSHostname
+        )
         self.opaqueConnectionModeProvider = initConnectionModeProvider(provider: connectionModeProviderProxy)
     }
 

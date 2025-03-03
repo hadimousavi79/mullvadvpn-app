@@ -67,7 +67,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, @unchecked Sendable {
         )
 
         let apiTransportProvider = APITransportProvider(
-            requestFactory: MullvadApiRequestFactory(apiContext: REST.apiContext)
+            requestFactory: MullvadApiRequestFactory(apiContext: apiContext)
         )
 
         adapter = WgAdapter(packetTunnelProvider: self)
@@ -84,6 +84,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, @unchecked Sendable {
         let proxyFactory = REST.ProxyFactory.makeProxyFactory(
             transportProvider: transportProvider,
             apiTransportProvider: apiTransportProvider,
+            addressCache: addressCache
         )
         let accountsProxy = proxyFactory.createAccountsProxy()
         let devicesProxy = proxyFactory.createDevicesProxy()

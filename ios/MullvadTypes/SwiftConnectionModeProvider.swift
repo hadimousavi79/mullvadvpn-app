@@ -9,6 +9,8 @@
 import Foundation
 
 public protocol SwiftConnectionModeProviding: Sendable {
+    var domainName: String { get }
+
     func initial()
     func pickMethod()
     func rotate()
@@ -16,9 +18,11 @@ public protocol SwiftConnectionModeProviding: Sendable {
 
 public final class SwiftConnectionModeProviderProxy: SwiftConnectionModeProviding, Sendable {
     let provider: SwiftConnectionModeProviding
+    public let domainName: String
 
-    public init(provider: SwiftConnectionModeProviding) {
+    public init(provider: SwiftConnectionModeProviding, domainName: String) {
         self.provider = provider
+        self.domainName = domainName
     }
 
     public func initial() {

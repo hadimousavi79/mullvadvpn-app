@@ -25,6 +25,10 @@ final class AccessMethodIterator: @unchecked Sendable, SwiftConnectionModeProvid
         dataSource.fetchLastReachable().id
     }
 
+    public var domainName: String {
+        REST.encryptedDNSHostname
+    }
+
     init(dataSource: AccessMethodRepositoryDataSource) {
         self.dataSource = dataSource
 

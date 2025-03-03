@@ -163,7 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             encryptedDNSTransport: encryptedDNSTransport
         )
 
-        let apiRequestFactory = MullvadApiRequestFactory(apiContext: REST.apiContext)
+        let apiRequestFactory = MullvadApiRequestFactory(apiContext: apiContext)
         let apiTransportProvider = APITransportProvider(requestFactory: apiRequestFactory)
 
         apiTransportMonitor = APITransportMonitor(
@@ -211,9 +211,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 transportProvider: REST.AnyTransportProvider { [weak self] in
                     self?.transportMonitor.makeTransport()
                 },
-             apiTransportProvider: REST.AnyAPITransportProvider { [weak self] in
+                apiTransportProvider: REST.AnyAPITransportProvider { [weak self] in
                     self?.apiTransportMonitor.makeTransport()
-                },
+                }, addressCache: addressCache
             )
         } else {
             proxyFactory = REST.ProxyFactory.makeProxyFactory(
@@ -222,7 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 },
                 apiTransportProvider: REST.AnyAPITransportProvider { [weak self] in
                     self?.apiTransportMonitor.makeTransport()
-                },
+                }, addressCache: addressCache
             )
         }
         apiProxy = proxyFactory.createAPIProxy()

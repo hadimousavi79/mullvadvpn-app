@@ -74,13 +74,7 @@ pub extern "C" fn mullvad_api_init_new(
         // It is imperative that the REST runtime is created within an async context, otherwise
         // ApiAvailability panics.
         let api_client = mullvad_api::Runtime::new(tokio_handle, &endpoint);
-        let rest_client = api_client
-            // .mullvad_rest_handle(StaticConnectionModeProvider::new(ApiConnectionMode::Direct));
-        .mullvad_rest_handle(*connection_mode_provider_context);
-        //    .mullvad_rest_handle(StaticConnectionModeProvider::new(ApiConnectionMode::Direct));
-            .mullvad_rest_handle(SwiftConnectionModeProvider::new());
-            // .mullvad_rest_handle(StaticConnectionModeProvider::new(ApiConnectionMode::Direct));
-        .mullvad_rest_handle(*connection_mode_provider_context);
+        let rest_client = api_client.mullvad_rest_handle(*connection_mode_provider_context);
 
         ApiContext {
             _api_client: api_client,

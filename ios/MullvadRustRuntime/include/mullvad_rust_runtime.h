@@ -27,6 +27,7 @@ typedef struct ExchangeCancelToken ExchangeCancelToken;
 typedef struct RequestCancelHandle RequestCancelHandle;
 
 typedef struct RetryStrategy RetryStrategy;
+
 typedef struct SwiftConnectionModeProviderContext SwiftConnectionModeProviderContext;
 
 typedef struct SwiftApiContext {
@@ -34,7 +35,7 @@ typedef struct SwiftApiContext {
 } SwiftApiContext;
 
 typedef struct SwiftConnectionModeProvider {
-  const struct SwiftConnectionModeProviderContext *_0;
+  struct SwiftConnectionModeProviderContext *_0;
 } SwiftConnectionModeProvider;
 
 typedef struct SwiftCancelHandle {
@@ -167,10 +168,6 @@ extern void mullvad_api_completion_finish(struct SwiftMullvadApiResponse respons
  */
 void mullvad_response_drop(struct SwiftMullvadApiResponse response);
 
-extern void connection_mode_provider_initial(const void *rawPointer);
-
-struct SwiftConnectionModeProvider init_connection_mode_provider(const void *raw_provider);
-
 /**
  * Creates a retry strategy that never retries after failure.
  * The result needs to be consumed.
@@ -193,6 +190,11 @@ struct SwiftRetryStrategy mullvad_api_retry_strategy_exponential(uintptr_t max_r
                                                                  uint64_t initial_sec,
                                                                  uint32_t factor,
                                                                  uint64_t max_delay_sec);
+
+extern void connection_mode_provider_initial(const void *rawPointer);
+
+struct SwiftConnectionModeProvider init_connection_mode_provider(const void *raw_provider,
+                                                                 const char *domain_name);
 
 /**
  * Initializes a valid pointer to an instance of `EncryptedDnsProxyState`.
